@@ -87,7 +87,7 @@ if ($sesionDTO->getRol() != "2") {
                                             <th>Precio</th>
 
                                             </thead>
-
+                                           
                                             <tbody>
                                                 <?php
                                                 $model = new ModelAdmin();
@@ -97,6 +97,8 @@ if ($sesionDTO->getRol() != "2") {
                                                     $listado_alimentop = unserialize($_SESSION['listado_alimentop']);
                                                     foreach ($listado_alimentop as $alim) {
                                                         echo "<tr>";
+                                                         echo "<td> <img src='../clientes/imagenAP/" . $alim->getNombre_img() . "'  width=10% height=10%/></td>";
+                                                         
                                                         echo "<td>" . $alim->getNombre_alimprep() . "</td>";
                                                         foreach ($listar as $prov) {
                                                             if ($alim->getId_cat() == $prov->getId_cat()) {
