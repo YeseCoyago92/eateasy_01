@@ -18,6 +18,7 @@ if ($sesionDTO->getRol() != "2") {
     header('Location: ../view/web/index.html');
     die();
 }
+$correo = $sesionDTO->getCorreo();
 ?>
 <html>
     <head>
@@ -29,6 +30,7 @@ if ($sesionDTO->getRol() != "2") {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
         <title>PEDIR</title>
+        
     </head>
 
 
@@ -51,13 +53,47 @@ if ($sesionDTO->getRol() != "2") {
 
                 </div>
                 <div class="enlaces" id="enlaces">
-                    <a href='../controller/controllerAdmin.php?opcion=ver_aplimentop'> Pedir</a> 
-                    <a href="alim_agregar.php"  class="btn-header">Vender</a> 
-                    <a href='../controller/controllerAdmin.php?opcion=ver_aplimentop_per&correo=<?php echo $sesionDTO->getCorreo() ?>'> Mis Ventas</a>                     
-                    <a href="../controller/controllerLogin.php?opcion=close" class="btn-header">Cerrar Sesión</a>
+                    
+                    
+                    
+                    
+                     <?php
+                                    // echo $correo;
+
+                                    $pdo = Database::connect();
+                                    $sql1 = "select curDate() as fecha";
+                                    $sql = "SELECT P.ID_PERSONA AS C4,P.CEDULA_PERSONA AS C3,P.APELLIDOS_PERSONA as c1, P. NOMBRES_PERSONA as c2
+                    FROM TAB_PERSONA P, TAB_PERSONA_ROL PR
+                    WHERE P.ID_PERSONA = PR.ID_PERSONA
+                    AND P.CORREO_PERSONA =  ?";
+                                    $sql2 = "SELECT MAX(ID_ORDEN) as p1 FROM TAB_ORDEN";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta1 = $pdo->prepare($sql1);
+                                    $consulta2 = $pdo->prepare($sql2);
+
+                                    $consulta->execute(array($correo));
+                                    $consulta1->execute(array());
+                                    $consulta2->execute(array());
+
+
+                                    $dato = $consulta->fetch();
+                                    $dato1 = $consulta1->fetch();
+                                    $dato2 = $consulta2->fetch();
+                                 
+//                                    echo "<h4><b>CEDULA:</B> " . $dato['C3'] . " </h4></td><td>                 <h4><b>NOMBRES: </B> " . $dato ['c1'] . " " . $dato['c2'];
+//                                    echo "</h4>";
+
+                            
+                                    ?>	
+                    <a >  <?php echo $dato ['c1'] . " " . $dato['c2']?> </a>
+                    <a href='../controller/controllerAdmin.php?opcion=ver_aplimentop'> <img src="img/carrito.png" title="PEDIR" width=80 height=80></a> 
+                    <a href="alim_agregar.php"  class="btn-header"><img src="img/VENDER.png" title="VENDER" width=80 height=80></a> 
+                    <a href='../controller/controllerAdmin.php?opcion=ver_aplimentop_per&correo=<?php echo $sesionDTO->getCorreo() ?>'> <img src="img/VENTAS.png" title="MIS VENTAS" width=80 height=80></a>                     
+                    <a href="../controller/controllerLogin.php?opcion=close" class="btn-header"> <img src="img/CERRAR.png" title="CERRAR SESSION" width=80 height=80></a>
                 </div>
                 <div class="icono" id="open">
                     <span>&#9776;</span>
+                    <?php echo $getCorreo ?>
                 </div>
             </div>
         </nav>
@@ -76,18 +112,28 @@ if ($sesionDTO->getRol() != "2") {
 
                             <div class="card-body">
                                 <div class="table-responsive">
+                                    
+                                    <form>
+                                        <label>Buscar</label>
+                                        <input type="text" id="parametro">
+                                        <input type="submit" >
+                                    </form>
                                     <form action="../controller/controllerAdmin.php">
                                         <input type="hidden" name="opcion" value="ver_aplimentop">
-                                        <table class="table">
-                                            <thead class=" text-primary">
+                                        <table class="table" style="color: chocolate"border="1">
+                                            <thead style="background: chocolate">
+                                           
+                                            <th>Imagen</th>
 
-                                            <th>Nombre</th>
                                             <th>Categoría</th>
-                                            <th>Descripcion</th>
+                                            <th>Nombre - Descripcion</th>
                                             <th>Precio</th>
 
+                                            <th>Cantidad</th>
+                                            <th>Agregar</th>
+                                            
                                             </thead>
-                                           
+
                                             <tbody>
                                                 <?php
                                                 $model = new ModelAdmin();
@@ -97,25 +143,28 @@ if ($sesionDTO->getRol() != "2") {
                                                     $listado_alimentop = unserialize($_SESSION['listado_alimentop']);
                                                     foreach ($listado_alimentop as $alim) {
                                                         echo "<tr>";
-                                                         echo "<td> <img src='../clientes/imagenAP/" . $alim->getNombre_img() . "'  width=10% height=10%/></td>";
-                                                         
-                                                        echo "<td>" . $alim->getNombre_alimprep() . "</td>";
+                                                        echo "<td> <img src='../clientes/imagenAP/" . $alim->getNombre_img() . "'  width=80 height=80/></td>";
+
+
                                                         foreach ($listar as $prov) {
                                                             if ($alim->getId_cat() == $prov->getId_cat()) {
-                                                                echo "<td>" . $prov->getDescripcion_cat() . "</td>";
+                                                                echo "<td>" . strtoupper($prov->getDescripcion_cat()) . "</td>";
                                                             }
                                                         }
-                                                        echo "<td>" . $alim->getDescripción_alimprep() . "</td>";
+                                                        echo "<td> <h5>" . strtoupper($alim->getNombre_alimprep()) . "</h5><br>" . $alim->getDescripción_alimprep() . "</td>";
                                                         echo "<td>" . $alim->getPrecio_alimprep() . "</td>";
-
+                                                        echo "<td> <input type='number' id='cantidad' min='1' value=1  style='width : 40px; heigth : 10px'></td>";
+                                                        echo " <td> <img src='img/agregar.png'> </td>";
                                                         echo "</tr>";
                                                     }
+                                                    
                                                 } else {
                                                     echo "No se han cargado datos.";
                                                 }
                                                 ?>
                                             </tbody>
                                         </table>
+                                      
                                     </form>
                                 </div>
                             </div>
