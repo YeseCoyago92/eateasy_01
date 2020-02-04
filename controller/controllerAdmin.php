@@ -184,20 +184,21 @@ switch ($opcion) {
         $nombre_alimprep = $_REQUEST['NOMBRE_ALIMENTOPREPARADO'];
         $descripción_alimprep = $_REQUEST['DESCRIPCION_ALIMENTOPREPARADO'];
         $precio_alimprep = $_REQUEST['PRECIO_ALIMENTOPREPARADO'];
-//        //$imagen_alimprep = $_REQUEST['IMAGEN_ALIMENTOPREPARADO'];
+        $imagen = $_REQUEST['IMAGEN_ALIMENTOPREPARADO'];
 /////////////////////////////////////////////////77
-//        $nombre_img = $_FILES['imagen']['name'];
-//        $tipo = $_FILES['imagen']['type'];
-//        $tamano = $_FILES['imagen']['size'];
+$nombre_img="hola";
+//        $nombre_img = $_FILES['IMAGEN_ALIMENTOPREPARADO']['name'];
+//        $tipo = $_FILES['IMAGEN_ALIMENTOPREPARADO']['type'];
+//        $tamano = $_FILES['IMAGEN_ALIMENTOPREPARADO']['size'];
 //
 ////Si existe imagen y tiene un tamaño correcto
-//        if (($nombre_img == !NULL)($_FILES['imagen']['size'] = 200000)) {
+//        if (($nombre_img == !NULL)($_FILES['IMAGEN_ALIMENTOPREPARADO']['size'] = 200000)) {
 ////indicamos los formatos que permitimos subir a nuestro servidor
-//            if (($_FILES["imagen"]["type"] == "image/gif") || ($_FILES["imagen"]["type"] == "image/jpeg") || ($_FILES["imagen"]["type"] == "image/jpg") || ($_FILES["imagen"]["type"] == "image/png")) {
+//            if (($_FILES["IMAGEN_ALIMENTOPREPARADO"]["type"] == "image/gif") || ($_FILES["IMAGEN_ALIMENTOPREPARADO"]["type"] == "image/jpeg") || ($_FILES["IMAGEN_ALIMENTOPREPARADO"]["type"] == "image/jpg") || ($_FILES["IMAGEN_ALIMENTOPREPARADO"]["type"] == "image/png")) {
 //// Ruta donde se guardarán las imágenes que subamos
-//                $directorio = $_SERVER['DOCUMENT_ROOT'] . '/intranet/uploads/';
+//                $directorio = $_SERVER['DOCUMENT_ROOT'] . '/clientes/imagenAP/';
 //// Muevo la imagen desde el directorio temporal a nuestra ruta indicada anteriormente
-//                move_uploaded_file($_FILES['imagen']['tmp_name'], $directorio . $nombre_img);
+//                move_uploaded_file($_FILES['IMAGEN_ALIMENTOPREPARADO']['tmp_name'], $directorio . $nombre_img);
 //            } else {
 ////si no cumple con el formato
 //                echo "No se puede subir una imagen con ese formato ";
@@ -208,8 +209,7 @@ switch ($opcion) {
 //                echo "La imagen es demasiado grande ";
 //        }
 
-        $nombre_img = 'hola';
-
+       
 ///////////////////////////////////////////7777
         $modeloAd->insertarAlimentoPreparado($id_alimprep, $id_cat, $id_per, $nombre_alimprep, $descripción_alimprep, $precio_alimprep, $nombre_img);
 

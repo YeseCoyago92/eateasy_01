@@ -184,7 +184,7 @@ if ($sesionDTO->getRol() != "2") {
 
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">Imagen: <span class="text-danger">*</span></label>
-                               <input id="imagen" name="imagen" size="30" type="file"> <br>
+                               <input id="imagen" name="IMAGEN_ALIMENTOPREPARADO" size="30" type="file"> <br>
                                 
                             </div>
                             <input type='submit' value='Guardar' class="btn btn-primary width-100" onclick="return ConfirmEdit()"/>
